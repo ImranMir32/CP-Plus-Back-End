@@ -1,3 +1,4 @@
+require("./config/db");
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -8,6 +9,16 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bodyParser.json());
+
+const userRouter = require("./routes/user.route");
+// api/users : GET
+// api/users/:id : GET
+// api/users/ : POST
+// api/users/:id : PATCH
+// api/users/:id : DELETE
+
+//users.api
+app.use("/api/users", userRouter);
 
 //random-quotes
 app.use("/api/random-quotes", randomQuotesRouter);
