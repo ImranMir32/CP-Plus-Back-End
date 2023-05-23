@@ -28,6 +28,7 @@ const createUser = async (req, res) => {
       password: req.body.password,
     });
     await newUser.save();
+    console.log(newUser);
     res.status(201).json(newUser);
   } catch (error) {
     res.status(500).send(error.message);

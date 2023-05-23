@@ -13,6 +13,6 @@ const {
 // router.get("/:id", getOneUser);
 // router.delete("/:id", deleteUser);
 // router.patch("/:id", updateUser);
-router.post("/", createUser);
+router.post("/signin", createUser);
 
 module.exports = router;
