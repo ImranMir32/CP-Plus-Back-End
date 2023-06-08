@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 // const getAllUsers = async (req, res) => {
 //   try {
 //     const users = await User.find();
@@ -10,14 +11,14 @@ const jwt = require("jsonwebtoken");
 //   }
 // };
 
-// const getOneUser = async (req, res) => {
-//   try {
-//     const user = await User.findOne({ id: req.params.id });
-//     res.status(200).json(user);
-//   } catch (error) {
-//     res.status(500).send(error.message);
-//   }
-// };
+const getTheUser = async (req, res) => {
+  try {
+    const user = await User.findOne({ id: req.params.id });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
 
 const createUser = async (req, res) => {
   try {
@@ -28,6 +29,7 @@ const createUser = async (req, res) => {
       hackerrankId: req.body.hackerrankId,
       phone: req.body.phone,
       password: hashedPassword,
+      score: 0,
     });
     await newUser.save();
     console.log(newUser);
@@ -39,20 +41,20 @@ const createUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-    const user = await User.find({ email: req.body.email });
+    const user = await User.findOne({ email: req.body.email });
     console.log(user);
-    if (user && user.length > 0) {
+    if (user) {
       const isValidPassword = await bcrypt.compare(
         req.body.password,
-        user[0].password
+        user.password
       );
 
       if (isValidPassword) {
         // generate token
         const token = jwt.sign(
           {
-            name: user[0].name,
-            userId: user[0]._id,
+            name: user.name,
+            userId: user._id,
           },
           process.env.JWT_SECRET,
           {
@@ -62,6 +64,7 @@ const loginUser = async (req, res) => {
 
         res.status(200).json({
           access_token: token,
+          user: user,
           message: "Login successful!",
         });
       } else {
@@ -107,6 +110,7 @@ module.exports = {
   //   getOneUser,
   createUser,
   loginUser,
+  getTheUser,
   //   updateUser,
   //   deleteUser,
 };

@@ -23,6 +23,9 @@ const userSchema = mongoose.Schema({
     type: String,
     require: true,
   },
+  score: {
+    type: Number,
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);
