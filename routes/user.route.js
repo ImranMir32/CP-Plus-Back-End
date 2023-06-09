@@ -6,6 +6,7 @@ const {
   //   getAllUsers,
   createUser,
   loginUser,
+  updateUser,
   //   getOneUser,
   //   deleteUser,
   //   updateUser,
@@ -16,6 +17,7 @@ const {
 // router.patch("/:id", updateUser);
 router.post("/signin", createUser);
 router.post("/login", loginUser);
+router.put("/update/:email", updateUser);
 // router.get("/", checkLogin, getTheUser);
 
 module.exports = router;

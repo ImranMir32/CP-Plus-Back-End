@@ -85,17 +85,36 @@ const loginUser = async (req, res) => {
   }
 };
 
-// const updateUser = async (req, res) => {
-//   try {
-//     const user = await User.findOne({ id: req.params.id });
-//     user.name = req.body.name;
-//     user.age = Number(req.body.age);
-//     await user.save();
-//     res.status(200).json(user);
-//   } catch (error) {
-//     res.status(500).send(error.message);
-//   }
-// };
+const updateUser = async (req, res) => {
+  console.log(req.body);
+  try {
+    const user = await User.findOne({ id: req.params.email });
+    if (user) {
+      const isValidPassword = await bcrypt.compare(
+        req.body.password,
+        user.password
+      );
+      if (isValidPassword) {
+        user.name = req.body.name;
+        user.hackerrankId = req.body.hackerrankId;
+        user.phone = req.body.phone;
+        await user.save();
+        res.status(200).json(user);
+      } else {
+        res.status(401).json({
+          error: "Authetication failed!",
+        });
+      }
+    } else {
+      res.status(401).json({
+        error: "Authetication failed!",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error.message);
+  }
+};
 
 // const deleteUser = async (req, res) => {
 //   try {
@@ -112,6 +131,6 @@ module.exports = {
   createUser,
   loginUser,
   getTheUser,
-  //   updateUser,
+  updateUser,
   //   deleteUser,
 };
