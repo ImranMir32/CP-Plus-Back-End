@@ -11,14 +11,14 @@ const jwt = require("jsonwebtoken");
 //   }
 // };
 
-const getTheUser = async (req, res) => {
-  try {
-    const user = await User.findOne({ id: req.params.id });
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-};
+// const getTheUser = async (req, res) => {
+//   try {
+//     const user = await User.findOne({ id: req.params.id });
+//     res.status(200).json(user);
+//   } catch (error) {
+//     res.status(500).send(error.message);
+//   }
+// };
 
 const createUser = async (req, res) => {
   try {
@@ -88,7 +88,7 @@ const loginUser = async (req, res) => {
 const updateUser = async (req, res) => {
   console.log(req.body);
   try {
-    const user = await User.findOne({ id: req.params.email });
+    const user = await User.findOne({ email: req.params.email });
     if (user) {
       const isValidPassword = await bcrypt.compare(
         req.body.password,
@@ -98,6 +98,37 @@ const updateUser = async (req, res) => {
         user.name = req.body.name;
         user.hackerrankId = req.body.hackerrankId;
         user.phone = req.body.phone;
+        await user.save();
+        res.status(200).json(user);
+      } else {
+        res.status(401).json({
+          error: "Authetication failed!",
+        });
+      }
+    } else {
+      res.status(401).json({
+        error: "Authetication failed!",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error.message);
+  }
+};
+
+const resetPassword = async (req, res) => {
+  console.log(req.body);
+  try {
+    const user = await User.findOne({ email: req.params.email });
+    console.log(user);
+    if (user) {
+      const isValidPassword = await bcrypt.compare(
+        req.body.currentPasswoord,
+        user.password
+      );
+      if (isValidPassword) {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        user.password = hashedPassword;
         await user.save();
         res.status(200).json(user);
       } else {
@@ -130,7 +161,8 @@ module.exports = {
   //   getOneUser,
   createUser,
   loginUser,
-  getTheUser,
+  // getTheUser,
   updateUser,
+  resetPassword,
   //   deleteUser,
 };

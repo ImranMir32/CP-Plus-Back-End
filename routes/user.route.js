@@ -7,6 +7,7 @@ const {
   createUser,
   loginUser,
   updateUser,
+  resetPassword,
   //   getOneUser,
   //   deleteUser,
   //   updateUser,
@@ -18,6 +19,7 @@ const {
 router.post("/signin", createUser);
 router.post("/login", loginUser);
 router.put("/update/:email", updateUser);
+router.put("/reset-password/:email", resetPassword);
 // router.get("/", checkLogin, getTheUser);
 
 module.exports = router;
