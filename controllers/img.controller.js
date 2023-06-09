@@ -40,7 +40,30 @@ const getImg = async (req, res) => {
   }
 };
 
+const updateImg = async (req, res) => {
+  try {
+    const existingImage = await imageModel.findOne({ email: req.params.email });
+    if (!existingImage) {
+      return res.status(404).send("Image not found");
+    }
+
+    existingImage.img = {
+      data: fs.readFileSync("uploads/" + req.file.filename),
+      contentType: "image/png",
+    };
+
+    const updatedImage = await existingImage.save();
+    console.log("Image is updated");
+    console.log(updatedImage);
+    res.send(updatedImage);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   imgUpload,
   getImg,
+  updateImg,
 };
