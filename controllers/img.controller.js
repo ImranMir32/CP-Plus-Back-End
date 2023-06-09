@@ -28,11 +28,19 @@ const imgUpload = async (req, res) => {
   }
 };
 
-// app.get("/", async (req, res) => {
-//   const allData = await imageModel.find();
-//   res.json(allData);
-// });
+const getImg = async (req, res) => {
+  try {
+    console.log(req.params.email);
+    const data = await imageModel.findOne({ email: req.params.email });
+    // console.log("data email->", data.img.data);
+    res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error.message);
+  }
+};
 
 module.exports = {
   imgUpload,
+  getImg,
 };
