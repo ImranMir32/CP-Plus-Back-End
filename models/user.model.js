@@ -23,7 +23,11 @@ const userSchema = mongoose.Schema({
     type: String,
     require: true,
   },
-  score: {
+
+  earn_score: {
+    type: Number,
+  },
+  total_attempted_score: {
     type: Number,
   },
 });

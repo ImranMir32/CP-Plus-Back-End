@@ -29,7 +29,8 @@ const createUser = async (req, res) => {
       hackerrankId: req.body.hackerrankId,
       phone: req.body.phone,
       password: hashedPassword,
-      score: 0,
+      earn_score: 0,
+      total_attempted_score: 0,
     });
     await newUser.save();
     console.log(newUser);

@@ -11,6 +11,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 const userRouter = require("./routes/user.route");
+const imgRouter = require("./routes/img.route");
 // api/users : GET
 // api/users/:id : GET
 // api/users/ : POST
@@ -19,6 +20,9 @@ const userRouter = require("./routes/user.route");
 
 //users.api
 app.use("/api/users", userRouter);
+
+//img.route
+app.use("/api/image", imgRouter);
 
 //random-quotes
 app.use("/api/random-quotes", randomQuotesRouter);
