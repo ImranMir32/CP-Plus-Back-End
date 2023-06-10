@@ -147,6 +147,24 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const updateScore = async (req, res) => {
+  console.log(req.body);
+  try {
+    const user = await User.findOne({ email: req.params.email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    user.earn_score = req.body.earn_score;
+    user.total_attempted_score = req.body.total_attempted_score;
+    await user.save();
+    console.log(user);
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 // const deleteUser = async (req, res) => {
 //   try {
 //     await User.deleteOne({ id: req.params.id });
@@ -164,5 +182,6 @@ module.exports = {
   // getTheUser,
   updateUser,
   resetPassword,
+  updateScore,
   //   deleteUser,
 };
